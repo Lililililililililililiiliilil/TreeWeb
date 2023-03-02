@@ -57,7 +57,7 @@ public class Node {
     public void deleteById(int otherId) {
         for (Node node : children) {
             if (node.getId() == (otherId)) {
-                node.getChildren()
+                node.getChildren();
             }
         }
     }
