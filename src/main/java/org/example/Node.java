@@ -1,8 +1,16 @@
 package org.example;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class Node {
+
+
     private String name;
     private int id;
     private ArrayList<Node> children;
@@ -12,6 +20,21 @@ public class Node {
         this.name = name;
         children = new ArrayList<>();
 
+    }
+
+    public String toJSON() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(this);
+        return json;
+    }
+    public ArrayList<Node> fromJSON(String test) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayList<Node> nodes =  objectMapper.readValue(test.getBytes(StandardCharsets.UTF_8), new TypeReference<Node>(){});
+        return nodes;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -26,7 +49,7 @@ public class Node {
         this.children = other;
     }
 
-    public void addNode(Node other) {
+    public void addChild(Node other) {
         this.children.add(other);
 
     }
@@ -47,6 +70,9 @@ public class Node {
     }
 
     public void killChildren() {
+        for (Node node : children) {
+            node.killChildren();
+        }
         this.children = new ArrayList<>();
     }
 
@@ -57,10 +83,16 @@ public class Node {
     public void deleteById(int otherId) {
         for (Node node : children) {
             if (node.getId() == (otherId)) {
-                node.getChildren();
+                children.remove(children.indexOf(node));
+                node.killChildren();
+
+            } else {
+                node.deleteById(otherId);
             }
         }
     }
+
+    public String toString() {
+        return this.getId() + " " + this.getName();
+    }
 }
-
-

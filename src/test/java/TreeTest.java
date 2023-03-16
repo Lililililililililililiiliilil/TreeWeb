@@ -1,5 +1,4 @@
 import org.example.Node;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -16,7 +15,7 @@ public class TreeTest {
     public void addNode() {
         Node first = new Node(1, "A");
         Node second = new Node(2, "B");
-        first.addNode(second);
+        first.addChild(second);
         assertEquals(first.getChildren().size(), 1);
         assertEquals(first.getChildren().get(0).getName(), "B");
     }
@@ -26,8 +25,8 @@ public class TreeTest {
         Node first = new Node(1, "A");
         Node second = new Node(2, "B");
         Node third = new Node(3, "C");
-        first.addNode(second);
-        first.addNode(third);
+        first.addChild(second);
+        first.addChild(third);
         assertTrue(first.searchByName("C"));
     }
 
@@ -36,8 +35,8 @@ public class TreeTest {
         Node first = new Node(1, "A");
         Node second = new Node(2, "B");
         Node third = new Node(3, "C");
-        first.addNode(second);
-        first.addNode(third);
+        first.addChild(second);
+        first.addChild(third);
         assertFalse(first.searchByName("D"));
     }
 
@@ -46,21 +45,32 @@ public class TreeTest {
         Node first = new Node(1, "A");
         Node second = new Node(2, "B");
         Node third = new Node(3, "C");
-        first.addNode(second);
-        first.addNode(third);
+        first.addChild(second);
+        first.addChild(third);
         first.deleteById(second.getId());
         assertEquals(first.getChildren().size(), 1);
     }
 
     @Test
-    public void killChildren() {
+    public void killChildren1() {
         Node first = new Node(1, "A");
         Node second = new Node(2, "B");
         Node third = new Node(3, "C");
-        first.addNode(second);
-        first.addNode(third);
+        first.addChild(second);
+        first.addChild(third);
         first.killChildren();
         assertEquals(first.getChildren().size(), 0);
+    }
+
+    @Test
+    public void killChildren2() {
+        Node first = new Node(1, "A");
+        Node second = new Node(2, "B");
+        Node third = new Node(3, "C");
+        first.addChild(second);
+        second.addChild(third);
+        first.killChildren();
+        assertEquals(second.getChildren().size(), 0);
     }
 
     @Test
