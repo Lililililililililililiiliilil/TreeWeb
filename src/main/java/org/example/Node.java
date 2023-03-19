@@ -7,31 +7,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Node {
 
 
     private String name;
     private int id;
-    private ArrayList<Node> children;
+    private List<Node> children = new ArrayList<>();
 
     public Node(int id, String name) {
         this.id = id;
         this.name = name;
-        children = new ArrayList<>();
 
     }
 
-    public String toJSON() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(this);
-        return json;
+    public Node() {
+        this.name = "";
+        this.id = 0;
     }
-    public ArrayList<Node> fromJSON(String test) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ArrayList<Node> nodes =  objectMapper.readValue(test.getBytes(StandardCharsets.UTF_8), new TypeReference<Node>(){});
-        return nodes;
+
+    public Node(int id, String name, List<Node> children) {
+        this.id = id;
+        this.name = name;
+        this.children = children;
     }
+
 
     public void setId(int id) {
         this.id = id;
@@ -54,7 +55,7 @@ public class Node {
 
     }
 
-    public ArrayList<Node> getChildren() {
+    public List<Node> getChildren() {
         return this.children;
     }
 
@@ -83,7 +84,7 @@ public class Node {
     public void deleteById(int otherId) {
         for (Node node : children) {
             if (node.getId() == (otherId)) {
-                children.remove(children.indexOf(node));
+                children.remove(node);
                 node.killChildren();
 
             } else {
