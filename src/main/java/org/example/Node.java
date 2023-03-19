@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Node {
 
@@ -83,6 +84,18 @@ public class Node {
 
             } else {
                 node.deleteById(otherId);
+            }
+        }
+    }
+
+    public void deleteByName(String otherName) {
+        for (Node node : children) {
+            if (Objects.equals(node.getName(), otherName)) {
+                children.remove(node);
+                node.killChildren();
+
+            } else {
+                node.deleteByName(otherName);
             }
         }
     }
