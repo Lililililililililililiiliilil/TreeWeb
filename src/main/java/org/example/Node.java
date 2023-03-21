@@ -41,7 +41,7 @@ public class Node {
         this.name = other;
     }
 
-    public void setChildren(ArrayList<Node> other) {
+    public void setChildren(List<Node> other) {
         this.children = other;
     }
 

@@ -26,8 +26,8 @@ public class TreeTest {
         Node first = new Node(1, "A");
         Node second = new Node(2, "B");
         first.addChild(second);
-        assertEquals(first.getChildren().size(), 1);
-        assertEquals(first.getChildren().get(0).getName(), "B");
+        assertEquals(1, first.getChildren().size());
+        assertEquals("B", first.getChildren().get(0).getName());
     }
 
 
@@ -64,7 +64,7 @@ public class TreeTest {
         first.addChild(second);
         first.addChild(third);
         first.deleteById(second.getId());
-        assertEquals(first.getChildren().size(), 1);
+        assertEquals(1, first.getChildren().size());
     }
 
     // удаление по названию узла
@@ -77,7 +77,7 @@ public class TreeTest {
         first.addChild(second);
         first.addChild(third);
         first.deleteByName(second.getName());
-        assertEquals(first.getChildren().size(), 1);
+        assertEquals(1, first.getChildren().size());
     }
 
     //удаление всех потомков - случай с потомками - листьями
@@ -89,7 +89,7 @@ public class TreeTest {
         first.addChild(second);
         first.addChild(third);
         first.killChildren();
-        assertEquals(first.getChildren().size(), 0);
+        assertEquals(0, first.getChildren().size());
     }
 
 
@@ -102,7 +102,7 @@ public class TreeTest {
         first.addChild(second);
         second.addChild(third);
         first.killChildren();
-        assertEquals(second.getChildren().size(), 0);
+        assertEquals(0, second.getChildren().size());
     }
 
 
@@ -111,7 +111,7 @@ public class TreeTest {
     public void changeName() {
         Node first = new Node(1, "A");
         first.setName("B");
-        assertEquals(first.getName(), "B");
+        assertEquals("B", first.getName());
     }
 
     // работа дерева с json-файлом - чтение и запись
