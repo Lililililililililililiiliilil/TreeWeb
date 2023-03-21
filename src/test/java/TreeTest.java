@@ -1,6 +1,12 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Node;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.util.Arrays;
+
+import static org.example.Main.getNodeFromJSON;
+import static org.example.Main.writeNodeToJSON;
 import static org.junit.Assert.*;
 
 public class TreeTest {
@@ -106,6 +112,17 @@ public class TreeTest {
         Node first = new Node(1, "A");
         first.setName("B");
         assertEquals(first.getName(), "B");
+    }
+
+    // работа дерева с json-файлом - чтение и запись
+
+    @Test
+    public void readWriteTreeJSON() throws IOException {
+        Node first = new Node(1, "A", Arrays.asList(new Node(2, "B"), new Node(3, "C")));
+        ObjectMapper mapper = new ObjectMapper();
+        writeNodeToJSON(first, "Tree.json", mapper);
+        Node tree = getNodeFromJSON("Tree.json", mapper);
+        assertEquals(tree.getName(), first.getName());
     }
 
 
