@@ -88,7 +88,7 @@ public class TreeTest {
         Node third = new Node(3, "C");
         first.addChild(second);
         first.addChild(third);
-        first.killChildren();
+        first.deleteChildren();
         assertEquals(0, first.getChildren().size());
     }
 
@@ -101,7 +101,7 @@ public class TreeTest {
         Node third = new Node(3, "C");
         first.addChild(second);
         second.addChild(third);
-        first.killChildren();
+        first.deleteChildren();
         assertEquals(0, second.getChildren().size());
     }
 

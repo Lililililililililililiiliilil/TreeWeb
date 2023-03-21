@@ -17,6 +17,8 @@ public class Node {
 
     }
 
+
+    // конструктор по умолчанию для jackson
     public Node() {
         this.name = "";
         this.id = 0;
@@ -29,31 +31,41 @@ public class Node {
     }
 
 
+    //сеттеры и геттеры
+
     public void setId(int id) {
         this.id = id;
     }
 
-    public String getName() {
-        return this.name;
+    public int getId() {
+        return this.id;
     }
 
     public void setName(String other) {
         this.name = other;
     }
 
-    public void setChildren(List<Node> other) {
-        this.children = other;
+    public String getName() {
+        return this.name;
     }
 
-    public void addChild(Node other) {
-        this.children.add(other);
-
+    public void setChildren(List<Node> other) {
+        this.children = other;
     }
 
     public List<Node> getChildren() {
         return this.children;
     }
 
+
+
+    // добавить дочерний корень
+    public void addChild(Node other) {
+        this.children.add(other);
+
+    }
+
+    // поиск в дереве по имени
     public boolean searchByName(String other) {
         for (Node node : children) {
             if (node.getName().equals(other)) {
@@ -65,22 +77,22 @@ public class Node {
         return false;
     }
 
-    public void killChildren() {
+
+    // удаление всех дочерних узлов
+    public void deleteChildren() {
         for (Node node : children) {
-            node.killChildren();
+            node.deleteChildren();
         }
         this.children = new ArrayList<>();
     }
 
-    public int getId() {
-        return this.id;
-    }
 
+    // удаление узла по идентификатору
     public void deleteById(int otherId) {
         for (Node node : children) {
             if (node.getId() == (otherId)) {
                 children.remove(node);
-                node.killChildren();
+                node.deleteChildren();
 
             } else {
                 node.deleteById(otherId);
@@ -88,11 +100,12 @@ public class Node {
         }
     }
 
+    // удаление узла по названию
     public void deleteByName(String otherName) {
         for (Node node : children) {
             if (Objects.equals(node.getName(), otherName)) {
                 children.remove(node);
-                node.killChildren();
+                node.deleteChildren();
 
             } else {
                 node.deleteByName(otherName);
@@ -100,6 +113,8 @@ public class Node {
         }
     }
 
+
+    //для "красивого" вывода узла
     public String toString() {
         return this.getId() + " " + this.getName();
     }
