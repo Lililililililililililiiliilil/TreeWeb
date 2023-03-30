@@ -1,0 +1,29 @@
+{
+  "name" : "Z",
+  "id" : 1,
+  "children" : [ {
+    "name" : "D",
+    "id" : 5,
+    "children" : [ {
+      "name" : "A",
+      "id" : 2,
+      "children" : [ {
+        "name" : "B",
+        "id" : 3,
+        "children" : [ ]
+      }, {
+        "name" : "C",
+        "id" : 4,
+        "children" : [ ]
+      } ]
+    }, {
+      "name" : "G",
+      "id" : 7,
+      "children" : [ ]
+    } ]
+  }, {
+    "name" : "E",
+    "id" : 6,
+    "children" : [ ]
+  } ]
+}

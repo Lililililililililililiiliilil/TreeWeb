@@ -126,4 +126,15 @@ public class TreeTest {
     }
 
 
+    // печать дерева в строку
+
+    @Test
+    public void TreeToString() {
+        Node first = new Node(1, "A", Arrays.asList(new Node(2, "B"), new Node(3, "C")));
+        String expected = "A\n" +
+                "├── B\n" +
+                "└── C\n";
+        assertEquals(expected, first.toString());
+    }
+
 }

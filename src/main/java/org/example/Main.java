@@ -17,13 +17,15 @@ public class Main {
         writer.writeValue(Paths.get(fileName).toFile(), node);
     }
 
+
+
     //получение дерева из json-файла
     public static Node getNodeFromJSON(String fileName, ObjectMapper mapper) throws IOException {
         return mapper.readValue(Paths.get(fileName).toFile(), Node.class);
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 
         Node second = new Node(2, "A",
@@ -32,6 +34,11 @@ public class Main {
                 Arrays.asList(
                         new Node(5, "D", Arrays.asList(second, new Node(7, "G"))), new Node(6, "E")));
 
+
+        Node test = new Node(1, "A", Arrays.asList(new Node(2, "B"), new Node(3, "C")));
+
+
+        System.out.println(first);
 
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -45,6 +52,8 @@ public class Main {
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
         }
+
+        first.createHTMLFromTree();
 
 
     }

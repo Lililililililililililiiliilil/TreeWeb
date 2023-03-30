@@ -1,6 +1,10 @@
 package org.example;
 
+
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,7 +62,6 @@ public class Node {
     }
 
 
-
     // добавить дочерний корень
     public void addChild(Node other) {
         this.children.add(other);
@@ -114,8 +117,53 @@ public class Node {
     }
 
 
-    //для "красивого" вывода узла
+    // вывод дерева в строку
     public String toString() {
-        return this.getId() + " " + this.getName();
+        StringBuilder buffer = new StringBuilder(50);
+        print(buffer, "", "");
+        return buffer.toString();
+    }
+
+
+    // создание красивого вывода с разделением и вложением
+    private void print(StringBuilder buffer, String prefix, String childrenPrefix) {
+        buffer.append(prefix);
+        buffer.append(name);
+        buffer.append('\n');
+        for (Iterator<Node> it = children.iterator(); it.hasNext(); ) {
+            Node next = it.next();
+            if (it.hasNext()) {
+                next.print(buffer, childrenPrefix + "├── ", childrenPrefix + "│   ");
+            } else {
+                next.print(buffer, childrenPrefix + "└── ", childrenPrefix + "    ");
+            }
+        }
+    }
+
+    public String createHTMLString(StringBuilder html) {
+        if (!children.isEmpty()) {
+            html.append("<li><span class=\"caret\">").append(this.getName()).append("</span>\n");
+            html.append("<ul class=\"nested\">\n");
+            for (Node node : children) {
+                node.createHTMLString(html);
+            }
+            html.append("</ul>");
+            html.append("</li>");
+        } else {
+            html.append("<li>").append(this.getName()).append("</li>\n");
+        }
+        return html.toString();
+    }
+
+    public void createHTMLFromTree() throws IOException {
+
+        PrintWriter writer = new PrintWriter("Tree.html", "UTF-8");
+        StringBuilder html = new StringBuilder();
+        writer.println("<h1>Tree</h1>");
+        writer.println("<ul id=\"myUL\">");
+        writer.println(this.createHTMLString(html));
+
+        writer.println("</ul>");
+        writer.close();
     }
 }
