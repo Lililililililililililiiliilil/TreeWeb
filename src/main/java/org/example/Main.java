@@ -10,7 +10,11 @@ import java.util.Arrays;
 
 public class Main {
 
-    //запись дерева в json-файл
+    /* запись дерева в json-файл
+     * @param node - узле начиная с которого начинается запись, предпочтительней - корень дерева
+     * @param fileName - название файла
+     * @param mapper - ObjectMapper парсер
+     */
     public static void writeNodeToJSON(Node node, String fileName, ObjectMapper mapper) throws IOException {
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
 
@@ -18,8 +22,11 @@ public class Main {
     }
 
 
-
-    //получение дерева из json-файла
+    /* Получение дерева из json-файла
+     * @param fileName - название файла
+     * @param mapper - ObjectMapper парсер
+     * @return узел, полученный из файла
+     */
     public static Node getNodeFromJSON(String fileName, ObjectMapper mapper) throws IOException {
         return mapper.readValue(Paths.get(fileName).toFile(), Node.class);
     }
@@ -33,9 +40,6 @@ public class Main {
         Node first = new Node(1, "Z",
                 Arrays.asList(
                         new Node(5, "D", Arrays.asList(second, new Node(7, "G"))), new Node(6, "E")));
-
-
-        Node test = new Node(1, "A", Arrays.asList(new Node(2, "B"), new Node(3, "C")));
 
 
         System.out.println(first);
@@ -53,7 +57,7 @@ public class Main {
             System.err.println(ex.getMessage());
         }
 
-        first.createHTMLFromTree();
+        first.createHTML("Tree");
 
 
     }

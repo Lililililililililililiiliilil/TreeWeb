@@ -62,19 +62,24 @@ public class Node {
     }
 
 
-    // добавить дочерний корень
+    /* Добавить дочерний узел
+     * @param other - узел, который хотим добавить
+     */
     public void addChild(Node other) {
         this.children.add(other);
 
     }
 
-    // поиск в дереве по имени
-    public boolean searchByName(String other) {
+    /* Поиск в дереве по имени
+     * @param otherName - имя узла который хотим найти в дереве
+     * @return истина если узел с таким деревом есть в дереве, ложь иначе
+     */
+    public boolean searchByName(String otherName) {
         for (Node node : children) {
-            if (node.getName().equals(other)) {
+            if (node.getName().equals(otherName)) {
                 return true;
             } else {
-                node.searchByName(other);
+                node.searchByName(otherName);
             }
         }
         return false;
@@ -90,7 +95,9 @@ public class Node {
     }
 
 
-    // удаление узла по идентификатору
+    /* Удаление узла по идентификатору
+     * @param otherId - индентификатор узла, который хотим удалить
+     */
     public void deleteById(int otherId) {
         for (Node node : children) {
             if (node.getId() == (otherId)) {
@@ -103,7 +110,9 @@ public class Node {
         }
     }
 
-    // удаление узла по названию
+    /* Удаление узла по имени
+     * @param otherName - имя узла, который хотим удалить
+     */
     public void deleteByName(String otherName) {
         for (Node node : children) {
             if (Objects.equals(node.getName(), otherName)) {
@@ -117,7 +126,9 @@ public class Node {
     }
 
 
-    // вывод дерева в строку
+    /* Вывод дерева в строку
+     * @return строка со структурированным выводом дерева
+     */
     public String toString() {
         StringBuilder buffer = new StringBuilder(50);
         print(buffer, "", "");
@@ -125,7 +136,11 @@ public class Node {
     }
 
 
-    // создание красивого вывода с разделением и вложением
+    /* Создание структурированного вывода дерева
+     * @param buffer - StringBuilder, где накапливается вывод
+     * @param prefix - префикс перед узлом
+     * @param childrenPrefix - префикс перед потомком
+     */
     private void print(StringBuilder buffer, String prefix, String childrenPrefix) {
         buffer.append(prefix);
         buffer.append(name);
@@ -140,28 +155,37 @@ public class Node {
         }
     }
 
-    public String createHTMLString(StringBuilder html) {
+    /*
+     * Создание html-кода для каждого узла
+     * @param html - строка в которой накапливается html код, изначально пустая
+     * @return итоговая строка с html кодом всех узлов
+     */
+    public String createHTMLStringForEachNode(StringBuilder html) {
         if (!children.isEmpty()) {
-            html.append("<li><span class=\"caret\">").append(this.getName()).append("</span>\n");
-            html.append("<ul class=\"nested\">\n");
+            html.append("<li><span class=\"caret\">").append(this.getName()).append("</span>");
+            html.append("<ul class=\"nested\">");
             for (Node node : children) {
-                node.createHTMLString(html);
+                node.createHTMLStringForEachNode(html);
             }
             html.append("</ul>");
             html.append("</li>");
         } else {
-            html.append("<li>").append(this.getName()).append("</li>\n");
+            html.append("<li>").append(this.getName()).append("</li>");
         }
         return html.toString();
     }
 
-    public void createHTMLFromTree() throws IOException {
+    /*
+     * Создание html файла с деревом
+     * @param filename - имя файла
+     */
+    public void createHTML(String fileName) throws IOException {
 
-        PrintWriter writer = new PrintWriter("Tree.html", "UTF-8");
+        PrintWriter writer = new PrintWriter(fileName + ".html", "UTF-8");
         StringBuilder html = new StringBuilder();
-        writer.println("<h1>Tree</h1>");
+        writer.println("<h1>My Tree</h1>");
         writer.println("<ul id=\"myUL\">");
-        writer.println(this.createHTMLString(html));
+        writer.println(this.createHTMLStringForEachNode(html));
 
         writer.println("</ul>");
         writer.close();
