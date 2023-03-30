@@ -15,6 +15,11 @@ public class Node {
     private int id;
     private List<Node> children = new ArrayList<>();
 
+    /*
+     * Конструктор с двумя параметрами
+     * @param id - идентификатор(порядковый номер) узла
+     * @param name - имя узла
+     */
     public Node(int id, String name) {
         this.id = id;
         this.name = name;
@@ -28,6 +33,13 @@ public class Node {
         this.id = 0;
     }
 
+
+    /*
+     * Конструктор с тремя параметрами
+     * @param id - идентификатор(порядковый номер) узла
+     * @param name - имя узла
+     * @param children - список потомков создаваемого узла
+     */
     public Node(int id, String name, List<Node> children) {
         this.id = id;
         this.name = name;
@@ -35,28 +47,44 @@ public class Node {
     }
 
 
-    //сеттеры и геттеры
-
+    /* Изменение идентификатора узла
+     * @param id - идентификатор на которой хотим поменять существующий
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /* Получение идентификатора
+     * @return идентификатор узла
+     */
     public int getId() {
         return this.id;
     }
 
-    public void setName(String other) {
-        this.name = other;
+    /* Изменение имени узла
+     * @param name - имя на которое хотим поменять
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
+    /* Получение имени
+     * return имя узла
+     */
     public String getName() {
         return this.name;
     }
 
-    public void setChildren(List<Node> other) {
-        this.children = other;
+    /* Изменение списка потомков
+     * @param children - новый список потомков
+     */
+    public void setChildren(List<Node> children) {
+        this.children = children;
     }
 
+    /* Получение списка потомков
+     * @return список потомков узла
+     */
     public List<Node> getChildren() {
         return this.children;
     }
@@ -96,7 +124,7 @@ public class Node {
 
 
     /* Удаление узла по идентификатору
-     * @param otherId - индентификатор узла, который хотим удалить
+     * @param otherId - идентификатор узла, который хотим удалить
      */
     public void deleteById(int otherId) {
         for (Node node : children) {
