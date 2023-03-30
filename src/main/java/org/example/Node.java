@@ -188,7 +188,7 @@ public class Node {
      * @param html - строка в которой накапливается html код, изначально пустая
      * @return итоговая строка с html кодом всех узлов
      */
-    public String createHTMLStringForEachNode(StringBuilder html) {
+    private String createHTMLStringForEachNode(StringBuilder html) {
         if (!children.isEmpty()) {
             html.append("<li><span class=\"caret\">").append(this.getName()).append("</span>");
             html.append("<ul class=\"nested\">");

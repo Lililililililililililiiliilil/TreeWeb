@@ -2,8 +2,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Node;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
+
 import java.util.Arrays;
+
 
 import static org.example.Main.getNodeFromJSON;
 import static org.example.Main.writeNodeToJSON;
@@ -135,6 +140,33 @@ public class TreeTest {
                 "├── B\n" +
                 "└── C\n";
         assertEquals(expected, first.toString());
+    }
+
+    // создание html по дереву
+
+    @Test
+    public void TreeToHTML() throws IOException {
+        Node first = new Node(1, "A", Arrays.asList(new Node(2, "B"), new Node(3, "C")));
+        first.createHTML("test");
+
+        StringBuilder test = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new FileReader("test.html"));
+
+        String line = reader.readLine();
+        while (line != null) {
+            test.append(line);
+            line = reader.readLine();
+
+        }
+
+        String expected = "<h1>My Tree</h1>" +
+                "<ul id=\"myUL\">" +
+                "<li><span class=\"caret\">A</span><ul class=\"nested\"><li>B</li><li>C</li></ul></li>" +
+                "</ul>";
+
+
+        assertEquals(expected, test.toString());
+
     }
 
 }
