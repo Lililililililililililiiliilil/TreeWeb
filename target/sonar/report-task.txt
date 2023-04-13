@@ -1,6 +1,0 @@
-projectKey=org.example.nechaev:myTree
-serverUrl=https://sonar-stud.krista.ru
-serverVersion=7.1.0.11001
-dashboardUrl=https://sonar-stud.krista.ru/dashboard/index/org.example.nechaev:myTree
-ceTaskId=AYbqmGqhA0nb6xxSSvEI
-ceTaskUrl=https://sonar-stud.krista.ru/api/ce/task?id=AYbqmGqhA0nb6xxSSvEI

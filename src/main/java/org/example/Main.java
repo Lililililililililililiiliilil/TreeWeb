@@ -4,29 +4,22 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class Main {
 
-    /* запись дерева в json-файл
-     * @param node - узле начиная с которого начинается запись, предпочтительней - корень дерева
-     * @param fileName - название файла
-     * @param mapper - ObjectMapper парсер
-     */
+    //запись дерева в json-файл
     public static void writeNodeToJSON(Node node, String fileName, ObjectMapper mapper) throws IOException {
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
 
         writer.writeValue(Paths.get(fileName).toFile(), node);
     }
 
-
-    /* Получение дерева из json-файла
-     * @param fileName - название файла
-     * @param mapper - ObjectMapper парсер
-     * @return узел, полученный из файла
-     */
+    //получение дерева из json-файла
     public static Node getNodeFromJSON(String fileName, ObjectMapper mapper) throws IOException {
         return mapper.readValue(Paths.get(fileName).toFile(), Node.class);
     }
@@ -41,9 +34,14 @@ public class Main {
                 Arrays.asList(
                         new Node(5, "D", Arrays.asList(second, new Node(7, "G"))), new Node(6, "E")));
 
+        System.out.println(first.searchById(5).getName());
 
         System.out.println(first);
-
+        try {
+            first.createHTML("Tree");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         try {
             ObjectMapper mapper = new ObjectMapper();
 
@@ -57,8 +55,6 @@ public class Main {
             System.err.println(ex.getMessage());
         }
 
-        first.createHTML("Tree");
-
-
     }
+
 }

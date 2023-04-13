@@ -1,8 +1,9 @@
 package org.example;
 
-
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,11 +16,6 @@ public class Node {
     private int id;
     private List<Node> children = new ArrayList<>();
 
-    /*
-     * Конструктор с двумя параметрами
-     * @param id - идентификатор(порядковый номер) узла
-     * @param name - имя узла
-     */
     public Node(int id, String name) {
         this.id = id;
         this.name = name;
@@ -33,13 +29,6 @@ public class Node {
         this.id = 0;
     }
 
-
-    /*
-     * Конструктор с тремя параметрами
-     * @param id - идентификатор(порядковый номер) узла
-     * @param name - имя узла
-     * @param children - список потомков создаваемого узла
-     */
     public Node(int id, String name, List<Node> children) {
         this.id = id;
         this.name = name;
@@ -47,70 +36,63 @@ public class Node {
     }
 
 
-    /* Изменение идентификатора узла
-     * @param id - идентификатор на которой хотим поменять существующий
-     */
+    //сеттеры и геттеры
+
     public void setId(int id) {
         this.id = id;
     }
 
-    /* Получение идентификатора
-     * @return идентификатор узла
-     */
     public int getId() {
         return this.id;
     }
 
-    /* Изменение имени узла
-     * @param name - имя на которое хотим поменять
-     */
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String other) {
+        this.name = other;
     }
 
-    /* Получение имени
-     * return имя узла
-     */
     public String getName() {
         return this.name;
     }
 
-    /* Изменение списка потомков
-     * @param children - новый список потомков
-     */
-    public void setChildren(List<Node> children) {
-        this.children = children;
+    public void setChildren(List<Node> other) {
+        this.children = other;
     }
 
-    /* Получение списка потомков
-     * @return список потомков узла
-     */
     public List<Node> getChildren() {
         return this.children;
     }
 
 
-    /* Добавить дочерний узел
-     * @param other - узел, который хотим добавить
-     */
+    // добавить дочерний корень
     public void addChild(Node other) {
         this.children.add(other);
 
     }
 
-    /* Поиск в дереве по имени
-     * @param otherName - имя узла который хотим найти в дереве
-     * @return истина если узел с таким деревом есть в дереве, ложь иначе
-     */
-    public boolean searchByName(String otherName) {
+    // поиск в дереве по имени
+    public boolean searchByName(String other) {
         for (Node node : children) {
-            if (node.getName().equals(otherName)) {
+            if (node.getName().equals(other)) {
                 return true;
             } else {
-                node.searchByName(otherName);
+                node.searchByName(other);
             }
         }
         return false;
+    }
+
+    public Node searchById(int other) {
+        if (this.id == other) {
+            return this;
+        }
+        for (Node node : children) {
+            if (node.getId() == (other)) {
+                return node;
+            } else {
+                node.searchById(other);
+            }
+        }
+        return new Node(888, "---");
     }
 
 
@@ -123,10 +105,10 @@ public class Node {
     }
 
 
-    /* Удаление узла по идентификатору
-     * @param otherId - идентификатор узла, который хотим удалить
-     */
+    // удаление узла по идентификатору
     public void deleteById(int otherId) {
+
+
         for (Node node : children) {
             if (node.getId() == (otherId)) {
                 children.remove(node);
@@ -138,9 +120,7 @@ public class Node {
         }
     }
 
-    /* Удаление узла по имени
-     * @param otherName - имя узла, который хотим удалить
-     */
+    // удаление узла по названию
     public void deleteByName(String otherName) {
         for (Node node : children) {
             if (Objects.equals(node.getName(), otherName)) {
@@ -153,27 +133,18 @@ public class Node {
         }
     }
 
-
-    /* Вывод дерева в строку
-     * @return строка со структурированным выводом дерева
-     */
+    //печать дерева в строку
     public String toString() {
         StringBuilder buffer = new StringBuilder(50);
         print(buffer, "", "");
         return buffer.toString();
     }
 
-
-    /* Создание структурированного вывода дерева
-     * @param buffer - StringBuilder, где накапливается вывод
-     * @param prefix - префикс перед узлом
-     * @param childrenPrefix - префикс перед потомком
-     */
     private void print(StringBuilder buffer, String prefix, String childrenPrefix) {
         buffer.append(prefix);
         buffer.append(name);
         buffer.append('\n');
-        for (Iterator<Node> it = children.iterator(); it.hasNext(); ) {
+        for (Iterator<Node> it = children.iterator(); ((Iterator<?>) it).hasNext(); ) {
             Node next = it.next();
             if (it.hasNext()) {
                 next.print(buffer, childrenPrefix + "├── ", childrenPrefix + "│   ");
@@ -183,14 +154,14 @@ public class Node {
         }
     }
 
-    /*
-     * Создание html-кода для каждого узла
-     * @param html - строка в которой накапливается html код, изначально пустая
-     * @return итоговая строка с html кодом всех узлов
-     */
-    private String createHTMLStringForEachNode(StringBuilder html) {
+    public String createHTMLStringForEachNode(StringBuilder html) {
         if (!children.isEmpty()) {
-            html.append("<li><span class=\"caret\">").append(this.getName()).append("</span>");
+            html.append("<li> <span class=\"caret\">" + this.getName() +
+                    "<form method=\"post\" action=\"add/" + this.getId() + "\">"
+                    + " <input type=\"submit\" value=\"Добавить\"" + "\">  " +
+                    "<form method=\"post\" action=\"delete/" + this.getId() + "\">"
+                    + " <input type=\"submit\" value=\"Удалить\"" + "\"> </form> "
+                    + "<a href=\"edit/" + this.getId() + "\"> Редактировать </a>  </form>" + "</span>");
             html.append("<ul class=\"nested\">");
             for (Node node : children) {
                 node.createHTMLStringForEachNode(html);
@@ -198,7 +169,12 @@ public class Node {
             html.append("</ul>");
             html.append("</li>");
         } else {
-            html.append("<li>").append(this.getName()).append("</li>");
+            html.append("<li>" + this.getName() +
+                    "<form method=\"post\" action=\"add/" + this.getId() + "\">"
+                    + " <input type=\"submit\" value=\"Добавить\"" + "\">  " +
+                    "<form method=\"post\" action=\"delete/" + this.getId() + "\">"
+                    + " <input type=\"submit\" value=\"Удалить\"" + "\"> </form> "
+                    + "<a href=\"edit/" + this.getId() + "\"> Редактировать </a>  </form> </li>" );
         }
         return html.toString();
     }
@@ -218,4 +194,5 @@ public class Node {
         writer.println("</ul>");
         writer.close();
     }
+
 }
