@@ -1,9 +1,8 @@
 package org.example;
 
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -71,7 +70,9 @@ public class Node {
 
     // поиск в дереве по имени
     public boolean searchByName(String other) {
+
         for (Node node : children) {
+            System.out.println(node.getName() + " " + other);
             if (node.getName().equals(other)) {
                 return true;
             } else {
@@ -81,18 +82,22 @@ public class Node {
         return false;
     }
 
-    public Node searchById(int other) {
-        if (this.id == other) {
+    public Node searchById(int id) {
+        if (this.id == id) {
             return this;
         }
-        for (Node node : children) {
-            if (node.getId() == (other)) {
-                return node;
+        for (Node child : this.children) {
+            if (child.getId() == (id)) {
+                return child;
             } else {
-                node.searchById(other);
+                Node recursiveChild = child.searchById(id);
+                if (recursiveChild != null) {
+                    return recursiveChild;
+                }
             }
         }
-        return new Node(888, "---");
+        return null;
+
     }
 
 
@@ -107,12 +112,10 @@ public class Node {
 
     // удаление узла по идентификатору
     public void deleteById(int otherId) {
-
-
         for (Node node : children) {
             if (node.getId() == (otherId)) {
                 children.remove(node);
-                node.deleteChildren();
+                return;
 
             } else {
                 node.deleteById(otherId);
@@ -122,7 +125,7 @@ public class Node {
 
     // удаление узла по названию
     public void deleteByName(String otherName) {
-        for (Node node : children) {
+        for (Node node : this.children) {
             if (Objects.equals(node.getName(), otherName)) {
                 children.remove(node);
                 node.deleteChildren();
@@ -139,6 +142,7 @@ public class Node {
         print(buffer, "", "");
         return buffer.toString();
     }
+
 
     private void print(StringBuilder buffer, String prefix, String childrenPrefix) {
         buffer.append(prefix);
@@ -158,10 +162,10 @@ public class Node {
         if (!children.isEmpty()) {
             html.append("<li> <span class=\"caret\">" + this.getName() +
                     "<form method=\"post\" action=\"add/" + this.getId() + "\">"
-                    + " <input type=\"submit\" value=\"Добавить\"" + "\">  " +
+                    + " <input type=\"submit\" value=\"Добавить\"" + "\"> </form> " +
                     "<form method=\"post\" action=\"delete/" + this.getId() + "\">"
                     + " <input type=\"submit\" value=\"Удалить\"" + "\"> </form> "
-                    + "<a href=\"edit/" + this.getId() + "\"> Редактировать </a>  </form>" + "</span>");
+                    + "<a href=\"edit/" + this.getId() + "\"> Редактировать </a> " + "</span>");
             html.append("<ul class=\"nested\">");
             for (Node node : children) {
                 node.createHTMLStringForEachNode(html);
@@ -171,10 +175,10 @@ public class Node {
         } else {
             html.append("<li>" + this.getName() +
                     "<form method=\"post\" action=\"add/" + this.getId() + "\">"
-                    + " <input type=\"submit\" value=\"Добавить\"" + "\">  " +
+                    + " <input type=\"submit\" value=\"Добавить\"" + "\">  </form>" +
                     "<form method=\"post\" action=\"delete/" + this.getId() + "\">"
                     + " <input type=\"submit\" value=\"Удалить\"" + "\"> </form> "
-                    + "<a href=\"edit/" + this.getId() + "\"> Редактировать </a>  </form> </li>" );
+                    + "<a href=\"edit/" + this.getId() + "\"> Редактировать </a>   </li>");
         }
         return html.toString();
     }

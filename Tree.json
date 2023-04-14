@@ -24,6 +24,10 @@
   }, {
     "name" : "E",
     "id" : 6,
-    "children" : [ ]
+    "children" : [ {
+      "name" : "M",
+      "id" : 8,
+      "children" : [ ]
+    } ]
   } ]
 }
