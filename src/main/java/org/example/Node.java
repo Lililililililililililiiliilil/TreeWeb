@@ -69,19 +69,26 @@ public class Node {
     }
 
     // поиск в дереве по имени
-    public boolean searchByName(String other) {
-
-        for (Node node : children) {
-            System.out.println(node.getName() + " " + other);
-            if (node.getName().equals(other)) {
-                return true;
+    public Node searchByName(String other) {
+        if (Objects.equals(this.name, other)) {
+            return this;
+        }
+        for (Node child : this.children) {
+            if (Objects.equals(child.getName(), other)) {
+                return child;
             } else {
-                node.searchByName(other);
+                Node recursiveChild = child.searchByName(other);
+                if (recursiveChild != null) {
+                    return recursiveChild;
+                }
             }
         }
-        return false;
+        return null;
+
     }
 
+
+    // поиск узла по номеру
     public Node searchById(int id) {
         if (this.id == id) {
             return this;

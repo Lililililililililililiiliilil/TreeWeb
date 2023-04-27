@@ -44,7 +44,7 @@ public class TreeTest {
         Node third = new Node(3, "C");
         first.addChild(second);
         first.addChild(third);
-        assertTrue(first.searchByName("C"));
+        assertEquals(first.searchByName("C").getName(), third.getName());
     }
 
 
@@ -56,7 +56,7 @@ public class TreeTest {
         Node third = new Node(3, "C");
         first.addChild(second);
         first.addChild(third);
-        assertFalse(first.searchByName("D"));
+        assertNull(first.searchByName("D"));
     }
 
 

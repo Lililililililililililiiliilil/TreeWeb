@@ -2,6 +2,8 @@ package org.example;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -21,6 +23,7 @@ public class TreePresentationController {
 
     /**
      * Запоминает список, с которым будет работать.
+     *
      * @param list список, с которым будет работать контроллер.
      */
     public TreePresentationController(List<String> list) {
@@ -39,6 +42,7 @@ public class TreePresentationController {
 
     /**
      * Выводит HTML-страницу со списком, ссылками на страницы редактирования и копкой добавления записи.
+     *
      * @return HTML-страница со списком.
      */
     @GET
@@ -66,8 +70,28 @@ public class TreePresentationController {
     }
 
     /**
+     * Метод для создания большого файла
+     *
+     * @return заглушка страницы.
+     */
+
+    @GET
+    @Path("/file")
+    @Produces("text/file")
+    public String fileWrite() throws IOException {
+        FileWriter fileWriter = new FileWriter("output.txt");
+
+        for (int i = 0; i < 200000000; i++) {
+            fileWriter.append((char) i);
+        }
+        return "\"hello world\"";
+    }
+
+
+    /**
      * Пример обработки POST запроса.
      * Добавляет одну случайную запись в список и перенаправляет пользователя на основную страницу со списком.
+     *
      * @return перенаправление на основную страницу со списком.
      */
     @POST
@@ -86,6 +110,7 @@ public class TreePresentationController {
     /**
      * Пример обработки POST запроса.
      * Добавляет одну случайную запись в список и перенаправляет пользователя на основную страницу со списком.
+     *
      * @return перенаправление на основную страницу со списком.
      */
     @POST
@@ -102,6 +127,7 @@ public class TreePresentationController {
 
     /**
      * Выводит страничку для редактирования одного элемента.
+     *
      * @param itemId индекс элемента списка.
      * @return страничка для редактирования одного элемента.
      */
@@ -120,7 +146,7 @@ public class TreePresentationController {
                         "    <h1>Редактирование узла</h1>" +
                         "    <form method=\"post\" action=\"/edit/" + itemId + "\">" +
                         "      <p>Название узла</p>" +
-                        "      <input type=\"text\" name=\"value\" value=\"" + nodeName +"\"/>" +
+                        "      <input type=\"text\" name=\"value\" value=\"" + nodeName + "\"/>" +
                         "      <input type=\"submit\"/>";
         result +=
                 "            </form>" +
@@ -131,6 +157,7 @@ public class TreePresentationController {
 
     /**
      * Редактирует элемент списка на основе полученных данных.
+     *
      * @param itemId индекс элемента списка.
      * @return перенаправление на основную страницу со списком.
      */
