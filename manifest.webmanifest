@@ -1,0 +1,7 @@
+manifest.webmanifest
+
+{
+  "icons": [
+    { "src": "/favicon.ico", "type": "image/ico", "sizes": "512x512" },
+  ]
+}
