@@ -6,44 +6,30 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 /**
- * Контроллер отвечающий за представление списка.
+ * Контроллер отвечающий за представление дерева.
  */
 @Path("/")
 public class TreePresentationController {
-    private final List<String> list;
 
-    private List<Node> nodes;
+
     private int treeDeep = 0;
 
 
     Node root = new Node(treeDeep, "Start");
 
     /**
-     * Запоминает список, с которым будет работать.
-     *
-     * @param list список, с которым будет работать контроллер.
+     * Конструктор по умолчанию
      */
-    public TreePresentationController(List<String> list) {
-        this.list = list;
+    public TreePresentationController() {
     }
 
-    /**
-     * Пример вывода простого текста.
-     */
-    @GET
-    @Path("example")
-    @Produces("text/plain")
-    public String getSimpleText() {
-        return "hello world";
-    }
 
     /**
-     * Выводит HTML-страницу со списком, ссылками на страницы редактирования и копкой добавления записи.
+     * Выводит заглавную страницу дерева.
      *
-     * @return HTML-страница со списком.
+     * @return HTML-страница с деревом.
      */
     @GET
     @Path("/")
@@ -52,18 +38,17 @@ public class TreePresentationController {
         String result =
                 "<html>" +
                         "  <head>" +
-                        "    <title>Работа с деревом</title>" +
+                        "    <title>Работа с деревом \uD83C\uDF33 </title>" +
+                        "    <link rel=\"icon\" href=\"favicon.ico\" type=\"image/x-icon\">" +
+                        "    <link rel=\"manifest\" href=\"manifest.webmanifest\">" +
                         "  </head>" +
                         "  <body>" +
-                        "    <h1>Дерево</h1>" +
+                        "    <h1>Дерево \uD83C\uDF33 </h1>" +
                         "    <ul>";
         StringBuilder html = new StringBuilder();
         result += root.createHTMLStringForEachNode(html);
         result += "    </ul>" +
                 "      <br/>" +
-                "      <form method=\"post\" action=\"add_tree_node\">" +
-                "        <input type=\"submit\" value=\"Add node\"/>" +
-                "      </form>" +
                 "  </body>" +
                 "</html>";
         return result;
@@ -89,16 +74,16 @@ public class TreePresentationController {
 
 
     /**
-     * Пример обработки POST запроса.
-     * Добавляет одну случайную запись в список и перенаправляет пользователя на основную страницу со списком.
+     * POST запрос.
+     * Добавляет новый узел с предопределённым именем и перенаправляет пользователя на заглавную страницу.
      *
-     * @return перенаправление на основную страницу со списком.
+     * @return перенаправление на заглавную страницу с деревом.
      */
     @POST
     @Path("add/{id}")
     @Produces("text/html")
     public Response addTreeNode(@PathParam("id") int id) {
-        root.searchById(id).addChild(new Node(treeDeep + 1, "Z"));
+        root.searchById(id).addChild(new Node(treeDeep + 1, "New node"));
         treeDeep++;
         try {
             return Response.seeOther(new URI("/")).build();
@@ -109,9 +94,9 @@ public class TreePresentationController {
 
     /**
      * Пример обработки POST запроса.
-     * Добавляет одну случайную запись в список и перенаправляет пользователя на основную страницу со списком.
+     * Удаляет выбранный узел дерева со всеми вложенными и перенаправляет пользователя на заглавную страницу.
      *
-     * @return перенаправление на основную страницу со списком.
+     * @return перенаправление на заглавную страницу с деревом.
      */
     @POST
     @Path("delete/{id}")
@@ -126,10 +111,10 @@ public class TreePresentationController {
     }
 
     /**
-     * Выводит страничку для редактирования одного элемента.
+     * Выводит страничку для редактирования узла.
      *
-     * @param itemId индекс элемента списка.
-     * @return страничка для редактирования одного элемента.
+     * @param itemId идентификатор узла.
+     * @return страничка для редактирования узла.
      */
     @GET
     @Path("/edit/{id}")
@@ -147,7 +132,7 @@ public class TreePresentationController {
                         "    <form method=\"post\" action=\"/edit/" + itemId + "\">" +
                         "      <p>Название узла</p>" +
                         "      <input type=\"text\" name=\"value\" value=\"" + nodeName + "\"/>" +
-                        "      <input type=\"submit\"/>";
+                        "      <input type=\"submit\" value=\"Готово\" />";
         result +=
                 "            </form>" +
                         "  </body>" +
@@ -156,10 +141,10 @@ public class TreePresentationController {
     }
 
     /**
-     * Редактирует элемент списка на основе полученных данных.
+     * Редактирует узел на основе полученных данных.
      *
-     * @param itemId индекс элемента списка.
-     * @return перенаправление на основную страницу со списком.
+     * @param itemId идентификатор узла.
+     * @return перенаправление на заглавную страницу с деревом.
      */
     @POST
     @Path("/edit/{id}")

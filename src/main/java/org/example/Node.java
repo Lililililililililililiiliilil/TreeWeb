@@ -150,7 +150,7 @@ public class Node {
         return buffer.toString();
     }
 
-
+    //Рекурсивное создание строки для печати дерева
     private void print(StringBuilder buffer, String prefix, String childrenPrefix) {
         buffer.append(prefix);
         buffer.append(name);
@@ -165,14 +165,18 @@ public class Node {
         }
     }
 
+    // Создание HTML-кода для каждого узла
     public String createHTMLStringForEachNode(StringBuilder html) {
         if (!children.isEmpty()) {
-            html.append("<li> <span class=\"caret\">" + this.getName() +
-                    "<form method=\"post\" action=\"add/" + this.getId() + "\">"
-                    + " <input type=\"submit\" value=\"Добавить\"" + "\"> </form> " +
-                    "<form method=\"post\" action=\"delete/" + this.getId() + "\">"
-                    + " <input type=\"submit\" value=\"Удалить\"" + "\"> </form> "
-                    + "<a href=\"edit/" + this.getId() + "\"> Редактировать </a> " + "</span>");
+            html.append(
+                    "<li>   <span class=\"caret\"> <div style=\"display:flex; margin: auto; \"> " + this.getName() +
+
+                            "<form style=\"margin: 0 5\" method=\"post\" action=\"add/" + this.getId() + "\">"
+                            + " <input type=\"submit\" value=\"Добавить\"> </form> " +
+                            "<form  method=\"post\" action=\"delete/" + this.getId() + "\">"
+                            + " <input type=\"submit\" value=\"Удалить\"> </form> "
+                            + "<a style=\"margin: 0 5\" href=\"edit/" + this.getId() + "\"> Редактировать </a>  </div> </span>"
+            );
             html.append("<ul class=\"nested\">");
             for (Node node : children) {
                 node.createHTMLStringForEachNode(html);
@@ -180,12 +184,12 @@ public class Node {
             html.append("</ul>");
             html.append("</li>");
         } else {
-            html.append("<li>" + this.getName() +
-                    "<form method=\"post\" action=\"add/" + this.getId() + "\">"
-                    + " <input type=\"submit\" value=\"Добавить\"" + "\">  </form>" +
-                    "<form method=\"post\" action=\"delete/" + this.getId() + "\">"
-                    + " <input type=\"submit\" value=\"Удалить\"" + "\"> </form> "
-                    + "<a href=\"edit/" + this.getId() + "\"> Редактировать </a>   </li>");
+            html.append(" <li> <div style=\"display:flex; margin: auto;\"> " + this.getName() +
+                    "<form style=\"margin: 0 5\" method=\"post\" action=\"add/" + this.getId() + "\">"
+                    + " <input type=\"submit\" value=\"Добавить\">  </form>" +
+                    "<form  method=\"post\" action=\"delete/" + this.getId() + "\">"
+                    + " <input type=\"submit\" value=\"Удалить\"> </form> "
+                    + "<a style=\"margin: 0 5\" href=\"edit/" + this.getId() + "\"> Редактировать </a>  </div>  </li> ");
         }
         return html.toString();
     }

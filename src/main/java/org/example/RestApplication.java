@@ -28,7 +28,7 @@ public class RestApplication extends Application {
     public Set<Object> getSingletons() {
         Set<Object> resources = new HashSet<>();
         resources.add(new ListPresentationController(list));
-        resources.add(new TreePresentationController(list));
+        resources.add(new TreePresentationController());
         resources.add(new LoginController());
         return resources;
     }
