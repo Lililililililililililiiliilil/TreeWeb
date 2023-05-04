@@ -26,36 +26,6 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-
-        Node second = new Node(2, "A",
-                Arrays.asList(new Node(3, "B"), new Node(4, "C")));
-        Node first = new Node(1, "Z",
-                Arrays.asList(
-                        new Node(5, "D", Arrays.asList(second, new Node(7, "G"))), new Node(6, "E", Arrays.asList(new Node(8, "M")))));
-
-        System.out.println(first.searchById(3));
-
-
-        System.out.println(first);
-
-        try {
-            first.createHTML("Tree");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-
-            writeNodeToJSON(first, "Tree.json", mapper);
-
-            Node tree = getNodeFromJSON("Tree.json", mapper);
-
-            System.out.println("id: " + tree.getId() + ", name: " + tree.getName());
-
-        } catch (IOException ex) {
-            System.err.println(ex.getMessage());
-        }
-
     }
 
 }
