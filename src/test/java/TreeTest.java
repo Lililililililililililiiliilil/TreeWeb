@@ -69,7 +69,7 @@ public class TreeTest {
         first.addChild(second);
         second.addChild(third);
         first.deleteById(second.getId());
-        assertEquals(1, first.getChildren().size());
+        assertEquals(0, first.getChildren().size());
     }
 
     // удаление по названию узла
@@ -159,10 +159,7 @@ public class TreeTest {
 
         }
 
-        String expected = "<h1>My Tree</h1>" +
-                "<ul id=\"myUL\">" +
-                "<li><span class=\"caret\">A</span><ul class=\"nested\"><li>B</li><li>C</li></ul></li>" +
-                "</ul>";
+        String expected = "<h1>My Tree</h1><ul id=\"myUL\"><li>   <span class=\"caret\"> <div style=\"display:flex; margin: auto; \"> A<form style=\"margin: 0 5\" method=\"post\" action=\"add/1\"> <input type=\"submit\" value=\"Добавить\"> </form> <form  method=\"post\" action=\"delete/1\"> <input type=\"submit\" value=\"Удалить\"> </form> <a style=\"margin: 0 5\" href=\"edit/1\"> Редактировать </a>  </div> </span><ul class=\"nested\"> <li> <div style=\"display:flex; margin: auto;\"> B<form style=\"margin: 0 5\" method=\"post\" action=\"add/2\"> <input type=\"submit\" value=\"Добавить\">  </form><form  method=\"post\" action=\"delete/2\"> <input type=\"submit\" value=\"Удалить\"> </form> <a style=\"margin: 0 5\" href=\"edit/2\"> Редактировать </a>  </div>  </li>  <li> <div style=\"display:flex; margin: auto;\"> C<form style=\"margin: 0 5\" method=\"post\" action=\"add/3\"> <input type=\"submit\" value=\"Добавить\">  </form><form  method=\"post\" action=\"delete/3\"> <input type=\"submit\" value=\"Удалить\"> </form> <a style=\"margin: 0 5\" href=\"edit/3\"> Редактировать </a>  </div>  </li> </ul></li></ul>";
 
 
         assertEquals(expected, test.toString());
