@@ -59,6 +59,17 @@ public class TreeTest {
         assertNull(first.searchByName("D"));
     }
 
+    //поиск по id базовый случай
+    @Test
+    public void findByID() {
+        Node first = new Node(1, "A");
+        Node second = new Node(2, "B");
+        Node third = new Node(3, "C");
+        first.addChild(second);
+        second.addChild(third);
+        assertEquals(first.searchById(3).getName(), third.getName());
+    }
+
 
     // удаление по ID
     @Test
